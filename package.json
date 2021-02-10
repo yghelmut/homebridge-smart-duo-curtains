@@ -1,0 +1,42 @@
+{
+  "name": "homebridge-smart-duo-curtains",
+  "version": "1.0.1-development",
+  "description": "HTTP curtains for Homebridge",
+  "license": "ISC",
+  "keywords": [
+    "homebridge-plugin"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yghelmut/homebridge-smart-duo-curtains"
+  },
+  "bugs": {
+    "url": "https://github.com/yghelmut/homebridge-smart-duo-curtains/issues"
+  },
+  "engines": {
+    "node": ">=10.17.0",
+    "homebridge": ">=0.4.0"
+  },
+  "author": {
+    "name": "Yannick Gery",
+    "email": "yannick.gery@gmail.com"
+  },
+  "contributors": [
+    {
+      "name": "Andreas Bauer (Supereg)"
+    },
+    {
+      "name": "Sander van Woensel (QuickSander)",
+    }
+  ],
+  "dependencies": {
+    "homebridge-http-base": "^2.1.8"
+  },
+  "devDependencies": {
+    "semantic-release": "^17.0.8",
+    "semantic-release-cli": "^5.3.1"
+  },
+  "scripts": {
+    "semantic-release": "semantic-release"
+  }
+}

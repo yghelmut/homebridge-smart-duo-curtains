@@ -1,0 +1,286 @@
+{
+	"pluginAlias": "HttpCurtain",
+	"pluginType": "accessory",
+	"singular": false,
+	"headerDisplay": "Integrate HTTP based curtain controllers. Supports push notifications via [homebridge-http-notification-server](https://github.com/Supereg/homebridge-http-notification-server). Edit config file directly for advanced URL control.",
+	"footerDisplay": "",
+	"schema": {
+		"type": "object",
+		"properties": {
+			"name": {
+				"title": "Name",
+				"type": "string",
+				"required": true,
+				"default": "My Curtain"
+			},
+			"notificationID": {
+				"title": "Notification ID",
+				"type": "string",
+				"requred": false,
+				"default": "my-http-curtain"
+			},
+			"notificationPassword": {
+				"title": "Notification Password",
+				"type": "string",
+				"requred": false,
+				"default": ""
+			},
+			"curtainDirection": {
+				"title": "Set 'left' or 'right'",
+				"type": "string",
+				"requred": false,
+				"default": ""
+			},
+			"getCurrentPosUrl": {
+				"type": "object",
+				"title": "Get Current Position URL",
+				"properties": {
+					"url": {
+						"type": "string",
+						"title": "URL",
+						"required": true,
+						"default": "http://my-curtain.local/api/v1/pos",
+						"format": "uri"
+					},
+					"method": {
+						"type": "string",
+						"required": false,
+						"default": "GET",
+						"typeahead": { "source": [ 
+							"GET", "PUT", "POST", "DELETE", "HEAD"
+						]}
+					},
+					"body": {
+						"type": "string",
+						"required": false
+					}
+				}
+			},
+			"getCurrentPosRegEx": {
+				"title": "Get Current Position Regular Expression",
+				"type": "string",
+				"requred": false,
+				"default": ""
+			},
+			"getPositionStateUrl": {
+				"type": "object",
+				"title": "Get Position State URL",
+				"properties": {
+					"url": {
+						"type": "string",
+						"title": "URL",
+						"description": "Not used by Home app, but here for HomeKit completess.",
+						"required": false,
+						"format": "uri"
+					},
+					"method": {
+						"type": "string",
+						"required": false,
+						"default": "GET",
+						"typeahead": { "source": [ 
+							"GET", "PUT", "POST", "DELETE", "HEAD"
+						]}
+					}
+				}
+			},
+			"setTargetPosUrl": {
+				"type": "object",
+				"title": "Set Target Position URL",
+				"properties": {
+					"url": {
+						"type": "string",
+						"title": "URL",
+						"description": "%d gets replaced by integer between 0-100.",
+						"required": false,
+						"default": "http://my-curtain.local/api/v1/pos/%d",
+						"format": "uri"
+					},
+					"method": {
+						"type": "string",
+						"required": false,
+						"default": "GET",
+						"typeahead": { "source": [ 
+							"GET", "PUT", "POST", "DELETE", "HEAD"
+						]}
+					}
+				}
+			},
+			"getTargetPosUrl": {
+				"type": "object",
+				"title": "Get Target Position URL",
+				"properties": {
+					"url": {
+						"type": "string",
+						"title": "URL",
+						"required": false,
+						"format": "uri"
+					},
+					"method": {
+						"type": "string",
+						"required": false,
+						"default": "GET",
+						"typeahead": { "source": [ 
+							"GET", "PUT", "POST", "DELETE", "HEAD"
+						]}
+					}
+				}
+			},
+			"getTargetPosRegEx": {
+				"title": "Get Target Position Regular Expression",
+				"type": "string",
+				"requred": false,
+				"default": ""
+			},
+			"identifyUrl": {
+				"type": "object",
+				"title": "HomeKit Identify URL",
+				"properties": {
+					"url": {
+						"type": "string",
+						"title": "URL",
+						"description": "Fill to support HomeKit identify request supported by (for example) the Eve Home app.",
+						"required": false,
+						"format": "uri"
+					},
+					"method": {
+						"type": "string",
+						"required": false,
+						"default": "GET",
+						"typeahead": { "source": [ 
+							"GET", "PUT", "POST", "DELETE", "HEAD"
+						]}
+					}
+				}
+			},
+			"pullInterval": {
+				"title": "Pull interval [ms]",
+				"type": "integer",
+				"description": "Leave empty to update position using push method only. Interval in milliseconds to pull position data from the curtain periodically. ",
+				"required": false,
+				"minimum": 0
+			},
+			"debug": {
+				"title": "Enable debug mode",
+				"type": "boolean",
+				"required": false,
+				"default": false
+			}
+		}
+	},
+	"layout": [
+	{
+    	"type": "flex",
+        "flex-flow": "row wrap",
+        "items": [
+        {
+        	"key": "name",
+            "type": "name"
+        }
+       ]
+	},
+	{
+		"type": "fieldset",
+		"title": "Notification Server",
+		"description": "Push notification configuration",
+		"expandable": true,
+		"flex-flow": "row wrap",
+		"displayFlex": true,
+		"flex-direction": "row",
+		"items": [
+		  {
+			  "key": "notificationID",
+			  "type": "notificationID"
+		  },
+		  {
+			"key": "notificationPassword",
+			"type": "notificationPassword"
+		  }
+		]
+	  },
+	  {
+		"type": "fieldset",
+		"title": "Getters",
+		"expandable": true,
+		"flex-flow": "column wrap",
+		"displayFlex": true,
+		"flex-direction": "column",
+		"items": [
+			{
+				"type": "flex",
+				"flex-flow": "row wrap",
+				"title": "Get Current Position",
+				"items": [
+					"getCurrentPosUrl.url",
+					"getCurrentPosUrl.method",
+					"getCurrentPosUrl.body"
+				]
+			},
+			"getCurrentPosRegEx",
+			{
+				"type": "flex",
+				"flex-flow": "row wrap",
+				"title": "Get Target Position",
+				"items": [
+					"getTargetPosUrl.url",
+					"getTargetPosUrl.method"
+				]
+			},
+			"getTargetPosRegEx",
+			{
+				"type": "flex",
+				"flex-flow": "row wrap",
+				"title": "Get Position State",
+				"items": [
+					"getPositionStateUrl.url",
+					"getPositionStateUrl.method"
+				]
+			}
+		]
+	  },
+
+	  {
+		"type": "fieldset",
+		"title": "Setters",
+		"expandable": true,
+		"flex-flow": "row wrap",
+		"displayFlex": true,
+		"flex-direction": "row",
+		"items": [
+			{
+				"type": "flex",
+				"flex-flow": "row wrap",
+				"title": "Set Target Position",
+				"items": [
+					"setTargetPosUrl.url",
+					"setTargetPosUrl.method"
+				]
+			}		
+		]
+	  },
+
+	  {
+		"type": "fieldset",
+		"title": "Advanced",
+		"expandable": true,
+		"flex-flow": "column wrap",
+		"displayFlex": true,
+		"flex-direction": "column",
+		"items": [
+			"debug",
+			{
+				"type": "flex",
+				"flex-flow": "row wrap",
+				"flex-direction": "row",
+				"title": "Identify",
+				"items": [
+					"identifyUrl.url",
+					"identifyUrl.method"
+				]
+			},
+			"pullInterval"
+			
+		]
+	  }
+	
+	]
+}
